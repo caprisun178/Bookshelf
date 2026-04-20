@@ -1,0 +1,65 @@
+CREATE TABLE USER_Profile (
+    ID SERIAL PRIMARY KEY,
+    Username VARCHAR(128) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    Email VARCHAR(360) NOT NULL UNIQUE,
+    FirstName VARCHAR(128),
+    LastName VARCHAR(128),
+    RowInserted TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE BOOK_OpenLibrary (
+    ID SERIAL PRIMARY KEY,
+    OpenLibraryID VARCHAR(100) NOT NULL UNIQUE,
+    Title VARCHAR(255) NOT NULL,
+    AuthorName VARCHAR(255),
+    CoverID INT,
+    PublishedYear INT,
+    RowInserted TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE BOOK_Tags (
+    ID SERIAL PRIMARY KEY,
+    Name VARCHAR(128) NOT NULL UNIQUE
+);
+
+CREATE TABLE USER_Books (
+    ID SERIAL PRIMARY KEY,
+    ProfileID INT NOT NULL,
+    BookID INT NOT NULL,
+    Status VARCHAR(20) NOT NULL CHECK (Status IN ('to_read', 'read')),
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_user_book_profile
+        FOREIGN KEY (ProfileID) REFERENCES USER_Profile(ID) ON DELETE CASCADE,
+
+    CONSTRAINT fk_user_book_book
+        FOREIGN KEY (BookID) REFERENCES BOOK_OpenLibrary(ID) ON DELETE CASCADE,
+
+    CONSTRAINT uq_user_book UNIQUE (ProfileID, BookID)
+);
+
+CREATE TABLE USER_Notes (
+    ID SERIAL PRIMARY KEY,
+    UserBookID INT NOT NULL,
+    Notes TEXT,
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_user_book_notes
+        FOREIGN KEY (UserBookID) REFERENCES USER_Books(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE USER_BookTags (
+    ID SERIAL PRIMARY KEY,
+    UserBookID INT NOT NULL,
+    TagID INT NOT NULL,
+
+    CONSTRAINT fk_user_booktags_userbook
+        FOREIGN KEY (UserBookID) REFERENCES USER_Books(ID) ON DELETE CASCADE,
+
+    CONSTRAINT fk_user_booktags_tag
+        FOREIGN KEY (TagID) REFERENCES BOOK_Tags(ID) ON DELETE CASCADE,
+
+    CONSTRAINT uq_userbook_tag UNIQUE (UserBookID, TagID)
+);
