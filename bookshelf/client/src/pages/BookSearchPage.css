@@ -1,0 +1,15 @@
+.book-search-page {
+  padding: 2rem;
+}
+
+.page-title {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}

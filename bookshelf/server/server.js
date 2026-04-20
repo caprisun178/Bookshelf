@@ -1,20 +1,17 @@
-const express = require("express");
-const cors = require("cors");
-
-const authRoutes = require("./routes/authRoutes");
-const bookRoutes = require("./routes/bookRoutes");
-const userBookRoutes = require("./routes/userBookRoutes");
-const noteRoutes = require("./routes/noteRoutes");
+import express from "express";
+import cors from "cors";
+import bookRoutes from "./routes/bookRoutes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend is working" });
+});
+
 app.use("/api/books", bookRoutes);
-app.use("/api/user-books", userBookRoutes);
-app.use("/api/notes", noteRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");
