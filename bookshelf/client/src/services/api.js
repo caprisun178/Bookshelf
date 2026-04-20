@@ -6,12 +6,19 @@ export async function searchBooks(query) {
 }
 
 export async function addUserBook(bookData) {
-  const res = await fetch(`${API_BASE}/user-books`, {
+  const response = await fetch(`${API_BASE}/user-books`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(bookData),
   });
-  return res.json();
+
+  if (!response.ok) {
+    throw new Error("Failed to add user book");
+  }
+
+  return response.json();
 }
 
 export async function getUserBooks(profileId) {

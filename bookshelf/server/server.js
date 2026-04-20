@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bookRoutes from "./routes/bookRoutes.js";
+import userBookRoutes from "./routes/userBookRoutes.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.get("/api/test", (req, res) => {
 });
 
 app.use("/api/books", bookRoutes);
+app.use("/api/user-books", userBookRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

@@ -24,8 +24,8 @@ export default function BookCard({ book, onAdd, showActions = false }) {
 
         {showActions && (
           <div className="book-card-actions">
-            <button onClick={() => onAdd(book, "to_read")}>Add to To Read</button>
-            <button onClick={() => onAdd(book, "read")}>Add to Have Read</button>
+            <button onClick={() => onAdd(book, "Want To Read")}>To Read</button>
+            <button onClick={() => onAdd(book, "Read")}>Have Read</button>
           </div>
         )}
       </div>
