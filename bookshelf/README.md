@@ -1,3 +1,0 @@
-# MVP Demo Link
-
-https://uncg-my.sharepoint.com/:v:/g/personal/siparisi_uncg_edu/IQB0hMaA28bgSqJ_3jmY9l5ZAXM-58PhFQmTY3XGTSr9b8M?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=oFbIxs
