@@ -13,9 +13,10 @@ export default function BookSearchPage() {
 
     try {
       const data = await searchBooks(query);
-      setResults(data);
+      setResults(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error searching books:", error);
+      setResults([]);
     }
   };
 
@@ -31,9 +32,10 @@ export default function BookSearchPage() {
         status,
       });
 
-      alert("Book added!");
+      alert(`Book added to ${status}!`);
     } catch (error) {
       console.error("Error adding book:", error);
+      alert("Could not save book.");
     }
   };
 
