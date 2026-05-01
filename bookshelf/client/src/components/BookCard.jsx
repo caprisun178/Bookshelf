@@ -1,6 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import "./BookCard.css";
 
 export default function BookCard({ book, onAdd, showActions = false }) {
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/books/${encodeURIComponent(book.openLibraryId)}`, {
+      state: { book },
+    });
+  };
+
   return (
     <div className="book-card">
       <div className="book-card-image-wrapper">
@@ -18,9 +27,12 @@ export default function BookCard({ book, onAdd, showActions = false }) {
       <div className="book-card-content">
         <h3 className="book-card-title">{book.title}</h3>
         <p className="book-card-author">{book.authorName}</p>
+
         {book.publishedYear && (
           <p className="book-card-year">Published: {book.publishedYear}</p>
         )}
+
+        <button onClick={handleViewDetails}>View Details</button>
 
         {showActions && (
           <div className="book-card-actions">

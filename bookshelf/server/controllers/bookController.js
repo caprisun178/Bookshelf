@@ -30,3 +30,28 @@ export async function searchBooks(req, res) {
     res.status(500).json({ error: "Failed to search books." });
   }
 }
+
+export async function getBookDetails(req, res) {
+  try {
+    const { workId } = req.params;
+
+    const response = await fetch(`https://openlibrary.org/works/${workId}.json`);
+    const data = await response.json();
+
+    let description = null;
+
+    if (typeof data.description === "string") {
+      description = data.description;
+    } else if (data.description?.value) {
+      description = data.description.value;
+    }
+
+    res.json({
+      title: data.title,
+      description,
+    });
+  } catch (error) {
+    console.error("Error fetching book details:", error);
+    res.status(500).json({ error: "Failed to fetch book details" });
+  }
+}

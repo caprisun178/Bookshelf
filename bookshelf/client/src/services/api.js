@@ -41,3 +41,41 @@ export async function deleteUserBook(id) {
   });
   return res.json();
 }
+
+export async function getBookDetails(workId) {
+  const cleanedWorkId = workId.replace("/works/", "");
+
+  const res = await fetch(`${API_BASE}/books/details/${cleanedWorkId}`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch book details");
+  }
+
+  return res.json();
+}
+
+export async function addNote(noteData) {
+  const res = await fetch(`${API_BASE}/notes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(noteData),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to add note");
+  }
+
+  return res.json();
+}
+
+export async function getNotes(userBookId) {
+  const res = await fetch(`${API_BASE}/notes/${userBookId}`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch notes");
+  }
+
+  return res.json();
+}

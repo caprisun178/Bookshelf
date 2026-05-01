@@ -1,0 +1,50 @@
+.book-details-page {
+  padding: 2rem;
+}
+
+.book-details-header {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.book-cover-section {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+.book-details-cover {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.book-details-no-cover {
+  width: 250px;
+  height: 350px;
+  border: 1px dashed #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-info-section {
+  max-width: 700px;
+}
+
+.notes-section {
+  margin-top: 2rem;
+}
+
+.notes-section textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.notes-section button {
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+}
