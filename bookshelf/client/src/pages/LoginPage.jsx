@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
+import { Link } from "react-router-dom";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -47,6 +48,9 @@ export default function LoginPage() {
       </form>
 
       {error && <p>{error}</p>}
+      <p>
+        Don&apos;t have an account? <Link to="/register">Create one</Link>
+      </p>
     </div>
   );
 }

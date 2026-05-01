@@ -95,3 +95,20 @@ export async function loginUser(username, password) {
 
   return res.json();
 }
+
+
+export async function registerUser(userData) {
+  const res = await fetch(`${API_BASE}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  if (!res.ok) {
+    throw new Error("Could not create account");
+  }
+
+  return res.json();
+}

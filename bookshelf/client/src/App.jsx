@@ -4,9 +4,13 @@ import BookshelfPage from "./pages/BookshelfPage";
 import BookDetailsPage from "./pages/BookDetailsPage";
 import LoginPage from "./pages/LoginPage";
 import logo from "./assets/bookshelf.png";
+import RegisterPage from "./pages/RegisterPage";
+
 import "./App.css";
 
 export default function App() {
+  const savedUser = localStorage.getItem("user");
+  const user = savedUser ? JSON.parse(savedUser) : null;
   return (
     <BrowserRouter>
       <div className="app">
@@ -50,6 +54,7 @@ export default function App() {
             <Route path="/search" element={<BookSearchPage />} />
             <Route path="/books/:workId" element={<BookDetailsPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
         </main>
       </div>

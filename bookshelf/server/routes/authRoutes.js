@@ -27,4 +27,26 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/register", async (req, res) => {
+  const { username, password, email, firstName, lastName } = req.body;
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO USER_Profile 
+        (Username, Password, Email, FirstName, LastName)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING ID, Username, Email, FirstName, LastName`,
+      [username, password, email, firstName, lastName]
+    );
+
+    res.status(201).json({
+      user: result.rows[0],
+    });
+  } catch (error) {
+    console.error("Register error:", error);
+    res.status(500).json({ error: "Could not create account" });
+  }
+});
+
+
 export default router;
