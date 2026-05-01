@@ -8,6 +8,7 @@ export default function BookCard({
   onDelete,
   showActions = false,
   showShelfActions = false,
+  showViewDetails = false,
 }) {
   const navigate = useNavigate();
 
@@ -47,9 +48,11 @@ export default function BookCard({
 
         {book.status && <p>Status: {book.status}</p>}
 
+        {showViewDetails && (
         <button className="view-details-button" onClick={handleViewDetails}>
           View Details
         </button>
+      )}
 
         {showActions && (
           <div className="book-card-actions">

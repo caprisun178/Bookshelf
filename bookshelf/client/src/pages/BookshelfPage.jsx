@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { getUserBooks, updateUserBook, deleteUserBook } from "../services/api";
 import BookCard from "../components/BookCard";
 
@@ -6,9 +7,16 @@ export default function BookshelfPage() {
   const [books, setBooks] = useState([]);
   const [filter, setFilter] = useState("all");
 
+  const savedUser = localStorage.getItem("user");
+  const user = savedUser ? JSON.parse(savedUser) : null;
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
   async function loadBooks() {
     try {
-      const data = await getUserBooks(1);
+      const data = await getUserBooks(user.id);
       setBooks(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Failed to load books:", error);
@@ -52,6 +60,7 @@ export default function BookshelfPage() {
             onStatusChange={handleStatusChange}
             onDelete={handleDelete}
             showShelfActions={true}
+            showViewDetails={true}
           />
         ))}
       </div>

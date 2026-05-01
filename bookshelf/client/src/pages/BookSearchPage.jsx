@@ -57,6 +57,7 @@ export default function BookSearchPage() {
             book={book}
             onAdd={handleAdd}
             showActions={true}
+            showViewDetails={false}
           />
         ))}
       </div>
