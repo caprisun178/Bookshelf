@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUserBooks, updateUserBook, deleteUserBook } from "../services/api";
+import BookCard from "../components/BookCard";
 
 export default function BookshelfPage() {
   const [books, setBooks] = useState([]);
@@ -23,21 +24,13 @@ export default function BookshelfPage() {
     filter === "all" ? books : books.filter((book) => book.status === filter);
 
   const handleStatusChange = async (id, newStatus) => {
-    try {
-      await updateUserBook(id, { status: newStatus });
-      loadBooks();
-    } catch (error) {
-      console.error("Failed to update status:", error);
-    }
+    await updateUserBook(id, { status: newStatus });
+    loadBooks();
   };
 
   const handleDelete = async (id) => {
-    try {
-      await deleteUserBook(id);
-      loadBooks();
-    } catch (error) {
-      console.error("Failed to delete book:", error);
-    }
+    await deleteUserBook(id);
+    loadBooks();
   };
 
   return (
@@ -51,33 +44,17 @@ export default function BookshelfPage() {
         <option value="Read">Read</option>
       </select>
 
-      {filteredBooks.map((book) => (
-        <div key={book.id}>
-          <h3>{book.title}</h3>
-          <p>Author: {book.authorname}</p>
-          <p>Status: {book.status}</p>
-
-          {book.coverid && (
-            <img
-              src={`https://covers.openlibrary.org/b/id/${book.coverid}-M.jpg`}
-              alt={book.title}
-            />
-          )}
-
-          <div>
-            <button onClick={() => handleStatusChange(book.id, "Want To Read")}>
-              Want To Read
-            </button>
-            <button onClick={() => handleStatusChange(book.id, "Reading")}>
-              Reading
-            </button>
-            <button onClick={() => handleStatusChange(book.id, "Read")}>
-              Read
-            </button>
-            <button onClick={() => handleDelete(book.id)}>Delete</button>
-          </div>
-        </div>
-      ))}
+      <div className="results-grid">
+        {filteredBooks.map((book) => (
+          <BookCard
+            key={book.id}
+            book={book}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+            showShelfActions={true}
+          />
+        ))}
+      </div>
     </div>
   );
 }

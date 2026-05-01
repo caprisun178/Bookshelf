@@ -57,3 +57,9 @@
   padding: 0.6rem 0.8rem;
   cursor: pointer;
 }
+
+.view-details-button {
+  padding: 0.6rem 0.8rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
