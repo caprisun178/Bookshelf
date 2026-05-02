@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/api";
 
-export default function RegisterPage() {
+export default function RegisterPage({ setUser })  {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -28,10 +28,12 @@ export default function RegisterPage() {
     try {
       const data = await registerUser(formData);
       localStorage.setItem("user", JSON.stringify(data.user));
+      setUser(data.user);
       navigate("/");
     } catch (error) {
       setError("Could not create account.");
     }
+   
   };
 
   return (

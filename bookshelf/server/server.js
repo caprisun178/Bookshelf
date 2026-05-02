@@ -3,6 +3,7 @@ import cors from "cors";
 import bookRoutes from "./routes/bookRoutes.js";
 import userBookRoutes from "./routes/userBookRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import noteRoutes from "./routes/noteRoutes.js";
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.get("/api/test", (req, res) => {
 app.use("/api/books", bookRoutes);
 app.use("/api/user-books", userBookRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/notes", noteRoutes);
+
 
 
 const PORT = process.env.PORT || 5000;

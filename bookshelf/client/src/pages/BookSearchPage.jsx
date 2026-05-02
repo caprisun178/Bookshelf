@@ -7,6 +7,8 @@ import "./BookSearchPage.css";
 export default function BookSearchPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const savedUser = localStorage.getItem("user");
+  const user = savedUser ? JSON.parse(savedUser) : null;
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -23,7 +25,7 @@ export default function BookSearchPage() {
   const handleAdd = async (book, status) => {
     try {
       await addUserBook({
-        profileId: 1,
+        profileId: user.id,
         openLibraryId: book.openLibraryId,
         title: book.title,
         authorName: book.authorName,

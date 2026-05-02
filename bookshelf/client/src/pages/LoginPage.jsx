@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
 import { Link } from "react-router-dom";
 
-export default function LoginPage() {
+export default function LoginPage({ setUser })  {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,11 +18,12 @@ export default function LoginPage() {
       const data = await loginUser(username, password);
 
       localStorage.setItem("user", JSON.stringify(data.user));
-
+      setUser(data.user);
       navigate("/");
     } catch (error) {
       setError("Invalid username or password.");
     }
+    
   };
 
   return (

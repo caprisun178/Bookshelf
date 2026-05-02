@@ -1,17 +1,37 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { getBookDetails, addNote } from "../services/api";
+import { useLocation, useParams, Navigate } from "react-router-dom";
+import { getBookDetails, addNote, getNotes } from "../services/api";
 import "./BookDetailsPage.css";
 
 export default function BookDetailsPage() {
   const { workId } = useParams();
   const location = useLocation();
+  const book = location.state?.book;
 
-  const bookFromState = location.state?.book;
+  const savedUser = localStorage.getItem("user");
+  const user = savedUser ? JSON.parse(savedUser) : null;
 
-  const [book, setBook] = useState(bookFromState || null);
   const [details, setDetails] = useState(null);
-  const [note, setNote] = useState("");
+  const [noteText, setNoteText] = useState("");
+  const [notes, setNotes] = useState([]);
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!book) {
+    return <p>No book selected. Go back to your bookshelf and choose a book.</p>;
+  }
+
+  async function loadNotes() {
+    try {
+      const data = await getNotes(book.id);
+      setNotes(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Failed to load notes:", error);
+      setNotes([]);
+    }
+  }
 
   useEffect(() => {
     async function loadDetails() {
@@ -24,19 +44,20 @@ export default function BookDetailsPage() {
     }
 
     loadDetails();
+    loadNotes();
   }, [workId]);
 
   const handleSaveNote = async () => {
-    if (!note.trim()) return;
+    if (!noteText.trim()) return;
 
     try {
       await addNote({
-        userBookId: book?.id || 1,
-        notes: note,
+        userBookId: book.id,
+        notes: noteText,
       });
 
-      alert("Note saved!");
-      setNote("");
+      setNoteText("");
+      loadNotes();
     } catch (error) {
       console.error("Failed to save note:", error);
       alert("Could not save note.");
@@ -47,11 +68,11 @@ export default function BookDetailsPage() {
     <div className="book-details-page">
       <section className="book-details-header">
         <div className="book-cover-section">
-          {book?.coverId || book?.coverid ? (
+          {book.coverid ? (
             <img
               className="book-details-cover"
-              src={`https://covers.openlibrary.org/b/id/${book.coverId || book.coverid}-L.jpg`}
-              alt={book?.title}
+              src={`https://covers.openlibrary.org/b/id/${book.coverid}-L.jpg`}
+              alt={book.title}
             />
           ) : (
             <div className="book-details-no-cover">No Cover</div>
@@ -59,27 +80,34 @@ export default function BookDetailsPage() {
         </div>
 
         <div className="book-info-section">
-          <h1>{book?.title || details?.title}</h1>
-          <p><strong>Author:</strong> {book?.authorName || book?.authorname || "Unknown"}</p>
-          <p><strong>Published:</strong> {book?.publishedYear || book?.publishedyear || "Unknown"}</p>
+          <h1>{book.title}</h1>
+          <p><strong>Author:</strong> {book.authorname}</p>
+          <p><strong>Status:</strong> {book.status}</p>
 
           <h2>Synopsis</h2>
-          <p>
-            {details?.description || "No synopsis is available for this book."}
-          </p>
+          <p>{details?.description || "No synopsis is available for this book."}</p>
         </div>
       </section>
 
       <section className="notes-section">
-        <h2>Story Notes</h2>
+        <h2>My Notes</h2>
 
         <textarea
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          placeholder="Add your notes about the story..."
+          value={noteText}
+          onChange={(e) => setNoteText(e.target.value)}
+          placeholder="Write your thoughts about the story..."
         />
 
         <button onClick={handleSaveNote}>Save Note</button>
+
+        <div className="notes-list">
+          {notes.map((note) => (
+            <div key={note.id} className="note-card">
+              <p>{note.notes}</p>
+              <small>{new Date(note.createddate).toLocaleString()}</small>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   );

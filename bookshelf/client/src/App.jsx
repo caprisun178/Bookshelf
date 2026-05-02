@@ -1,16 +1,27 @@
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import BookSearchPage from "./pages/BookSearchPage";
 import BookshelfPage from "./pages/BookshelfPage";
 import BookDetailsPage from "./pages/BookDetailsPage";
 import LoginPage from "./pages/LoginPage";
-import logo from "./assets/bookshelf.png";
 import RegisterPage from "./pages/RegisterPage";
-
+import logo from "./assets/bookshelf.png";
 import "./App.css";
 
 export default function App() {
-  const savedUser = localStorage.getItem("user");
-  const user = savedUser ? JSON.parse(savedUser) : null;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    setUser(savedUser ? JSON.parse(savedUser) : null);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    window.location.href = "/login";
+  };
+
   return (
     <BrowserRouter>
       <div className="app">
@@ -31,14 +42,7 @@ export default function App() {
             {user ? (
               <>
                 <span>Welcome, {user.username}</span>
-                <button
-                  onClick={() => {
-                    localStorage.removeItem("user");
-                    window.location.href = "/login";
-                  }}
-                >
-                  Logout
-                </button>
+                <button onClick={handleLogout}>Logout</button>
               </>
             ) : (
               <NavLink to="/login" className="nav-link">
@@ -53,8 +57,8 @@ export default function App() {
             <Route path="/" element={<BookshelfPage />} />
             <Route path="/search" element={<BookSearchPage />} />
             <Route path="/books/:workId" element={<BookDetailsPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage setUser={setUser} />} />
+            <Route path="/register" element={<RegisterPage setUser={setUser} />} />
           </Routes>
         </main>
       </div>
